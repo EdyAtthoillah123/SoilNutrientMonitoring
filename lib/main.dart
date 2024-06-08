@@ -1,4 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:soil_nutrient/dashboard1.dart';
+import 'package:soil_nutrient/dashboardtwo.dart';
+import 'package:soil_nutrient/gantipassword.dart';
+import 'package:soil_nutrient/info.dart';
+import 'package:soil_nutrient/laporan.dart';
+import 'package:soil_nutrient/laporantwo.dart';
+import 'package:soil_nutrient/login.dart';
+import 'package:soil_nutrient/profile.dart';
 import 'package:soil_nutrient/splash_screen.dart';
 
 void main() {
@@ -17,7 +25,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home:SplashScreen(),
+      home:LaporanTwo(),
     );
   }
 }
