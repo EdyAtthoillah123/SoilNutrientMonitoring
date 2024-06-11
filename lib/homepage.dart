@@ -27,16 +27,6 @@ class _HomeState extends State<Home> {
         iconTheme: IconThemeData(
           color: Colors.white, // Warna ikon panah kembali
         ),
-        // leading: Builder(
-        //   builder: (BuildContext context) {
-        //     return IconButton(
-        //       icon: const Icon(Icons.menu),
-        //       onPressed: () {
-        //         Scaffold.of(context).openDrawer(); // Fungsi untuk membuka drawer
-        //       },
-        //     );
-        //   },
-        // ),
       ),
       drawer: Drawer(
         child: ListView(
@@ -100,15 +90,41 @@ class _HomeState extends State<Home> {
         ),
       ),
       body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            // Navigate to the second screen when the button is pressed.
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => Sensor()),
-            );
-          },
-          child: Text('Go to Second Screen'),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Logo di atas tombol
+            Padding(
+              padding: const EdgeInsets.only(bottom: 20),
+              child: Image.asset(
+                'assets/images/sensor.png', // Ganti dengan path logo Anda
+                width: 250, // Ubah ukuran logo sesuai kebutuhan Anda
+                height: 250, // Ubah ukuran logo sesuai kebutuhan Anda
+              ),
+            ),
+            // Tombol "Mulai"
+            ElevatedButton(
+              
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Sensor()),
+                );
+                // Tambahkan aksi yang Anda inginkan saat tombol ditekan
+                print('Tombol ditekan!');
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xFF2E5F4C), // Warna latar belakang tombol
+                foregroundColor: Colors.white, // Warna teks tombol
+                padding: EdgeInsets.symmetric(
+                    horizontal: 75, vertical: 15), // Ukuran tombol
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10), // Border radius 5px
+                ),
+              ),
+              child: Text('Mulai'),
+            ),
+          ],
         ),
       ),
     );
