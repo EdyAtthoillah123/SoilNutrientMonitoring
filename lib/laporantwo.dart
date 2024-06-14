@@ -19,69 +19,16 @@ class _LaporanTwoState extends State<LaporanTwo> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Nutrisoil',
+          'NutriSoil',
           style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: Colors.green, // Set the navbar color to green
+        backgroundColor: Colors.green,
         iconTheme: IconThemeData(color: Colors.white),
-      ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.green, // Set the drawer header color to green
-              ),
-              child: Column(
-                children: [
-                  CircleAvatar(
-                    radius: 40,
-                    backgroundImage: AssetImage('assets/images/profile_wishal.jpg'), // Path to your profile image
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    'Wishal Azharyan Al Hisyam',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 15,
-                    ),
-                  ),
-                  Text(
-                    'wishal123@gmail.com',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 15,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            ListTile(
-              leading: Icon(Icons.home, color: Colors.black),
-              title: Text('Home', style: TextStyle(color: Colors.black)),
-              onTap: () {
-                // Navigate to the home screen
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.settings, color: Colors.black),
-              title: Text('Settings', style: TextStyle(color: Colors.black)),
-              onTap: () {
-                // Navigate to the settings screen
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.logout, color: Colors.black),
-              title: Text('Logout', style: TextStyle(color: Colors.black)),
-              onTap: () {
-                // Handle logout action
-                Navigator.pop(context);
-              },
-            ),
-          ],
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
       ),
       body: SingleChildScrollView(
@@ -117,17 +64,14 @@ class _LaporanTwoState extends State<LaporanTwo> {
                               controller: _textController,
                               decoration: InputDecoration(
                                 labelText: 'Masukkan Nama Lahan',
-                                border: OutlineInputBorder(),
+                                border: UnderlineInputBorder(
+                                  
+                                ),
+                               
                               ),
                             ),
                           ),
                         ],
-                      ),
-                      SizedBox(height: 10),
-                      Container(
-                        height: 2,
-                        width: MediaQuery.of(context).size.width - 40,
-                        color: Color.fromARGB(255, 160, 160, 160),
                       ),
                       SizedBox(height: 20),
                     ],
@@ -224,7 +168,7 @@ class _LaporanTwoState extends State<LaporanTwo> {
                       child: Row(
                         children: [
                           Text(
-                            "Lahan 1",
+                            "Laporan",
                             style: TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.bold),
                           ),
@@ -253,11 +197,15 @@ class _LaporanTwoState extends State<LaporanTwo> {
                         )),
                     Padding(
                       padding: const EdgeInsets.all(20.0),
-                      child: Text(
-                        "Lahan tidak mempunyai faktor pembatas yang berarti atau nyata  terhadap penggunaan berkelanjutan, atau hanya mempunyai faktor  pembatas yang bersifat minor dan tidak mereduksi produktivitas lahan  secara nyata. \nRata Rata Unsur Hara Tanah \nNatrium : 0.35% \nFosfor    : 27 ppm \nKalium   : 50 mg/100gr \nPh          : 5,5 H2O \nSuhu      : 32 Derajat \nKelembapan  : 40% Saran Tanaman : Jagung",
-                        style: TextStyle(color: Colors.black, fontSize: 15),
+                      child: Center(
+                        child: Text(
+                          "Laporan lahan akan tampil ketika data sensor pada 5 titik lahan terbaca",
+                          style: TextStyle(color: Colors.black, fontSize: 15),
+                          textAlign: TextAlign.center, // Center the text
+                        ),
                       ),
                     ),
+                    SizedBox(height: 20),
                   ]),
               ),
             ),

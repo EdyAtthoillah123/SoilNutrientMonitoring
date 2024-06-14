@@ -4,6 +4,10 @@ import 'package:soil_nutrient/dashboardtwo.dart';
 import 'package:soil_nutrient/gantipassword.dart';
 import 'package:soil_nutrient/info.dart';
 import 'package:soil_nutrient/laporan.dart';
+import 'package:soil_nutrient/laporanfive.dart';
+import 'package:soil_nutrient/laporanfour.dart';
+import 'package:soil_nutrient/laporansix.dart';
+import 'package:soil_nutrient/laporanthree.dart';
 import 'package:soil_nutrient/laporantwo.dart';
 import 'package:soil_nutrient/login.dart';
 import 'package:soil_nutrient/profile.dart';
@@ -25,7 +29,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home:LaporanTwo(),
+      home:Laporan(),
     );
   }
 }

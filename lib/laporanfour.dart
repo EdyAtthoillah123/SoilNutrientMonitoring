@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class Laporan extends StatefulWidget {
+class LaporanFour extends StatefulWidget {
   @override
-  _LaporanState createState() => _LaporanState();
+  _LaporanFourState createState() => _LaporanFourState();
 }
 
-class _LaporanState extends State<Laporan> {
+class _LaporanFourState extends State<LaporanFour> {
   final TextEditingController _textController = TextEditingController();
 
   @override
@@ -117,8 +117,8 @@ class _LaporanState extends State<Laporan> {
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Icon(
-                                Icons.close,
-                                color: Colors.red,
+                                (i == 1 || i == 2) ? Icons.check : Icons.close, // Conditional icon
+                                color: (i == 1 || i == 2) ? Colors.green : Colors.red, // Conditional color
                               ),
                             ),
                           ],

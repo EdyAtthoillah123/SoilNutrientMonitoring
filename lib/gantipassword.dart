@@ -12,7 +12,7 @@ class ChangePassword extends StatelessWidget {
         backgroundColor: Colors.green,
         iconTheme: IconThemeData(color: Colors.white),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: Icon(Icons.arrow_back_ios),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -45,7 +45,7 @@ class ChangePassword extends StatelessWidget {
                       obscureText: true,
                       decoration: InputDecoration(
                         labelText: 'Kata Sandi Saat Ini',
-                        border: OutlineInputBorder(),
+                        border: UnderlineInputBorder(),
                       ),
                     ),
                     SizedBox(height: 20),
@@ -53,7 +53,7 @@ class ChangePassword extends StatelessWidget {
                       obscureText: true,
                       decoration: InputDecoration(
                         labelText: 'Kata Sandi Baru',
-                        border: OutlineInputBorder(),
+                        border: UnderlineInputBorder(),
                       ),
                     ),
                     SizedBox(height: 20),
@@ -61,7 +61,7 @@ class ChangePassword extends StatelessWidget {
                       obscureText: true,
                       decoration: InputDecoration(
                         labelText: 'Konfirmasi Kata Sandi Baru',
-                        border: OutlineInputBorder(),
+                        border: UnderlineInputBorder(),
                       ),
                     ),
                   ],

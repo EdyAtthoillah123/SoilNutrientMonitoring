@@ -12,7 +12,7 @@ class Profile extends StatelessWidget {
         backgroundColor: Colors.green,
         iconTheme: IconThemeData(color: Colors.white),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: Icon(Icons.arrow_back_ios),
           onPressed: () {
             Navigator.pop(context);
           },

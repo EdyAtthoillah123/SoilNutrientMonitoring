@@ -18,28 +18,26 @@ class InfoPage extends StatelessWidget {
           },
         ),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(
-            padding: EdgeInsets.only(top: 20.0),
-            child: Image.asset(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
               'assets/images/logo.png', // Ganti dengan path gambar logo Anda
               height: 400.0, 
               width: 400.0,
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(bottom: 60.0),
-            child: Text(
+            SizedBox(height: 0), // Adjust space between image and text
+            Text(
               'Versi 1.0',
               style: TextStyle(
                 fontFamily: 'Poppins',
                 fontSize: 18,
               ),
             ),
-          ),
-        ],
+             SizedBox(height: 100),
+          ],
+        ),
       ),
     );
   }
