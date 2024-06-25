@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
 import 'login.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -8,10 +9,27 @@ class SplashScreen extends StatefulWidget {
   _SplashScreenState createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenState extends State<SplashScreen>
+    with SingleTickerProviderStateMixin {
+  AnimationController? _controller;
+  Animation<double>? _animation;
+
   @override
   void initState() {
     super.initState();
+
+    _controller = AnimationController(
+      duration: const Duration(seconds: 2),
+      vsync: this,
+    );
+
+    _animation = CurvedAnimation(
+      parent: _controller!,
+      curve: Curves.easeIn,
+    );
+
+    _controller!.forward();
+
     _navigateToLogin();
   }
 
@@ -24,30 +42,55 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   @override
+  void dispose() {
+    _controller!.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        color: Color.fromRGBO(46, 95, 76, 1.000),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Color(0xFF2E5F4C),
+              Color(0xFF3D9970),
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
         child: Column(
-          mainAxisAlignment:
-              MainAxisAlignment.center, // Vertically center the children
-          crossAxisAlignment:
-              CrossAxisAlignment.center, // Horizontally center the children
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image.asset(
-              'assets/images/logo.png',
-              height: 167,
-              width: 167,
+            FadeTransition(
+              opacity: _animation!,
+              child: Image.asset(
+                'assets/images/logo.png',
+                height: 150,
+                width: 150,
+              ),
             ),
-            SizedBox(
-                height:
-                    20.0), // Add some space between the logo and the progress indicator
+            SizedBox(height: 14.0),
+            FadeTransition(
+              opacity: _animation!,
+              child: Text(
+                'Soil Nutrient Monitoring',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            SizedBox(height: 20.0),
             CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(
-                  Colors.white), // Atur warna indikator
-              backgroundColor: Color.fromARGB(190, 255, 255, 255), // Atur warna latar belakang menjadi transparan
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+              backgroundColor: Color.fromARGB(190, 255, 255, 255),
             ),
           ],
         ),

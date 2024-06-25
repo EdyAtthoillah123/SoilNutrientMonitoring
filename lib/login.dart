@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'homepage.dart';
 import 'register.dart';
 import 'package:flutter/gestures.dart';
+import 'Api/Api_Service.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -11,31 +12,27 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final _formKey = GlobalKey<FormState>();
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-
-  @override
-  void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
-    super.dispose();
-  }
-
-  void _login() {
-    if (_formKey.currentState!.validate()) {
-      // Implement login logic here, for now, we'll just navigate to the Home screen
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => Home()),
-      );
-    }
-  }
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   void _goToRegister() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => RegisterScreen()),
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) => RegisterScreen(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          const begin = Offset(1.0, 0.0);
+          const end = Offset.zero;
+          const curve = Curves.easeInOut;
+
+          var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+          return SlideTransition(
+            position: animation.drive(tween),
+            child: child,
+          );
+        },
+      ),
     );
   }
 
@@ -78,7 +75,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
                   // Form
                   Form(
-                    key: _formKey,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -94,7 +90,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                         TextFormField(
-                          controller: _emailController,
+                          controller: emailController,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
                             hintText: 'Masukkan email',
@@ -123,7 +119,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                         TextFormField(
-                          controller: _passwordController,
+                          controller: passwordController,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
                             hintText: 'Masukkan password',
@@ -152,49 +148,53 @@ class _LoginScreenState extends State<LoginScreen> {
 
                         // Login Button
                         Center(
-  child: Column(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      SizedBox(
-        width: 220,
-        child: ElevatedButton(
-          onPressed: _login,
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Color(0xFF2E5F4C),
-            foregroundColor: Colors.white,
-            padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-          ),
-          child: Text(
-            'Masuk',
-            style: TextStyle(
-              fontFamily: 'Poppins',
-              fontSize: 14,
-            ),
-          ),
-        ),
-      ),
-      SizedBox(height: 10.0),
-      Text.rich(
-        TextSpan(
-          text: 'Belum memiliki akun? ',
-          style: TextStyle(color: Colors.black),
-          children: [
-            TextSpan(
-              text: 'Daftar',
-              style: TextStyle(color: Colors.green),
-              recognizer: TapGestureRecognizer()
-                ..onTap = _goToRegister,
-            ),
-          ],
-        ),
-      ),
-    ],
-  ),
-),
-
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                width: 220,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    String email = emailController.text;
+                                    String password = passwordController.text;
+                                    loginUser(context, email, password);
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Color(0xFF2E5F4C),
+                                    foregroundColor: Colors.white,
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 50, vertical: 15),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    'Masuk',
+                                    style: TextStyle(
+                                      fontFamily: 'Poppins',
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 10.0),
+                              Text.rich(
+                                TextSpan(
+                                  text: 'Belum memiliki akun? ',
+                                  style: TextStyle(color: Colors.black),
+                                  children: [
+                                    TextSpan(
+                                      text: 'Daftar',
+                                      style: TextStyle(color: Colors.green),
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = _goToRegister,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                   ),
