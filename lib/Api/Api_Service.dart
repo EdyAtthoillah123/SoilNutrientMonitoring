@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:soil_nutrient/homepage.dart';
@@ -6,9 +8,42 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+class Land {
+  final int id;
+  final double averageNatrium;
+  final double averageFosfor;
+  final double averageKalium;
+  final double averagePh;
+  final double averageMoisture;
+  final double averageTemperature;
 
-Future<void> registerUser(String username, String email, String password) async {
-  final apiUrl = Uri.parse('http://192.168.170.97:8000/api/register/');
+  Land({
+    required this.id,
+    required this.averageNatrium,
+    required this.averageFosfor,
+    required this.averageKalium,
+    required this.averagePh,
+    required this.averageMoisture,
+    required this.averageTemperature,
+  });
+
+  factory Land.fromJson(Map<String, dynamic> json) {
+    return Land(
+      id: json['id'],
+      averageNatrium: json['average_natrium'].toDouble(),
+      averageFosfor: json['average_fosfor'].toDouble(),
+      averageKalium: json['average_kalium'].toDouble(),
+      averagePh: json['average_ph'].toDouble(),
+      averageMoisture: json['average_moisture'].toDouble(),
+      averageTemperature: json['average_temperature'].toDouble(),
+    );
+  }
+}
+
+
+Future<void> registerUser(
+    String username, String email, String password) async {
+  final apiUrl = Uri.parse('http://192.168.112.97:8000/api/register/');
 
   final response = await http.post(
     apiUrl,
@@ -21,20 +56,21 @@ Future<void> registerUser(String username, String email, String password) async 
       'password': password,
     }),
   );
-if (response.statusCode == 201) {
+  if (response.statusCode == 201) {
     print('Registrasi berhasil');
     Fluttertoast.showToast(
       msg: 'Registrasi berhasil',
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.BOTTOM,
-      backgroundColor: const Color.fromARGB(255, 172, 255, 174), // Warna latar belakang toast
+      backgroundColor: const Color.fromARGB(
+          255, 172, 255, 174), // Warna latar belakang toast
       textColor: Colors.white, // Warna teks toast
       fontSize: 16.0, // Ukuran teks toast
     );
   } else {
     print('Registrasi gagal');
     Fluttertoast.showToast(
-      msg:  'Registrasi Gagal',
+      msg: 'Registrasi Gagal',
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.BOTTOM,
       backgroundColor: Color.fromARGB(255, 255, 125, 116),
@@ -42,16 +78,14 @@ if (response.statusCode == 201) {
       fontSize: 16.0,
     );
   }
-  
-  
 }
 
 Future<void> loginUser(
   BuildContext context, String email, String password) async {
-  print('Email: $email');  // Mencetak email
-  print('Password: $password');  // Mencetak password
+  print('Email: $email'); // Mencetak email
+  print('Password: $password'); // Mencetak password
 
-  final apiUrl = Uri.parse('http://192.168.170.97:8000/api/login/');
+  final apiUrl = Uri.parse('http://192.168.112.97:8000/api/login/');
 
   try {
     final response = await http.post(
@@ -102,7 +136,6 @@ Future<void> loginUser(
     );
   }
 }
-
 
 class Berita {
   final int id;
