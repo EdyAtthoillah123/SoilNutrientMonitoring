@@ -30,7 +30,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  google_fonts: ^2.1.0
+  google_fonts: ^2.3.3
   cupertino_icons: ^1.0.6
   syncfusion_flutter_gauges: ^20.1.55
   shared_preferences: ^2.0.0

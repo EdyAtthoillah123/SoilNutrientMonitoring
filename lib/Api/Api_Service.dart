@@ -43,7 +43,7 @@ class Land {
 
 Future<void> registerUser(
     String username, String email, String password) async {
-  final apiUrl = Uri.parse('http://192.168.112.97:8000/api/register/');
+  final apiUrl = Uri.parse('http://192.168.1.13:8000/api/register/');
 
   final response = await http.post(
     apiUrl,
@@ -85,7 +85,7 @@ Future<void> loginUser(
   print('Email: $email'); // Mencetak email
   print('Password: $password'); // Mencetak password
 
-  final apiUrl = Uri.parse('http://192.168.112.97:8000/api/login/');
+  final apiUrl = Uri.parse('http://192.168.1.13:8000/api/login/');
 
   try {
     final response = await http.post(
