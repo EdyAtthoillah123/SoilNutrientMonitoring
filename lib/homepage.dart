@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:soil_nutrient/bluetooth.dart';
 import 'package:soil_nutrient/profile.dart';
 import 'package:soil_nutrient/sensor.dart';
 import 'Api/Api_Service.dart';
@@ -179,7 +180,10 @@ class _HomeState extends State<Home> {
                               vertical: 10.0), // Padding atas dan bawah
                           child: ElevatedButton(
                             onPressed: () {
-                              // Tambahkan fungsi onPressed sesuai kebutuhan
+                              Route route = MaterialPageRoute(
+                                builder: (context) => Bluetooth(),
+                              );
+                              Navigator.push(context, route);
                             },
                             style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all<Color>(

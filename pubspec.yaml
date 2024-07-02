@@ -35,6 +35,9 @@ dependencies:
   syncfusion_flutter_gauges: ^20.1.55
   shared_preferences: ^2.0.0
   fluttertoast: ^8.0.8
+  flutter_blue: ^0.8.0
+  get:
+  permission_handler:
 
 dev_dependencies:
   flutter_test:
