@@ -1,7 +1,4 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:soil_nutrient/bluetooth.dart';
 import 'package:soil_nutrient/profile.dart';
 import 'package:soil_nutrient/sensor.dart';
 import 'Api/Api_Service.dart';
@@ -22,7 +19,7 @@ class _HomeState extends State<Home> {
     super.initState();
     fetchLands();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -163,10 +160,10 @@ class _HomeState extends State<Home> {
                               vertical: 10.0), // Padding atas dan bawah
                           child: ElevatedButton(
                             onPressed: () {
-                              Route route = MaterialPageRoute(
-                                builder: (context) => FlutterBlueApp(),
-                              );
-                              Navigator.push(context, route);
+                              // Route route = MaterialPageRoute(
+                              //   builder: (context) => FlutterBlueApp(),
+                              // );
+                              // Navigator.push(context, route);
                             },
                             style: ButtonStyle(
                               backgroundColor: WidgetStateProperty.all<Color>(
