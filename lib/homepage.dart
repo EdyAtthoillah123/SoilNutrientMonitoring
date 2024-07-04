@@ -7,7 +7,7 @@ import 'package:soil_nutrient/sensor.dart';
 import 'Api/Api_Service.dart';
 
 class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+  const Home({super.key});
 
   @override
   _HomeState createState() => _HomeState();
@@ -22,40 +22,22 @@ class _HomeState extends State<Home> {
     super.initState();
     fetchLands();
   }
-
-  Future<void> fetchLands() async {
-    final response =
-        await http.get(Uri.parse('http://192.168.1.13:8000/api/showland/'));
-
-    if (response.statusCode == 200) {
-      final List<dynamic> landsJson = json.decode(response.body)['lands'];
-      setState(() {
-        lands = landsJson.map((json) => Land.fromJson(json)).toList();
-        isLoading = false;
-      });
-    } else {
-      // Handle the error
-      setState(() {
-        isLoading = false;
-      });
-    }
-  }
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Nutrisoil',
           style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: Color(0xFF2E5F4C),
-        titleTextStyle: TextStyle(
+        backgroundColor: const Color(0xFF2E5F4C),
+        titleTextStyle: const TextStyle(
           color: Colors.white,
           fontSize: 20,
           fontWeight: FontWeight.bold,
         ),
-        iconTheme: IconThemeData(
+        iconTheme: const IconThemeData(
           color: Colors.white,
         ),
       ),
@@ -63,7 +45,7 @@ class _HomeState extends State<Home> {
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            UserAccountsDrawerHeader(
+            const UserAccountsDrawerHeader(
               accountName: Text('John Doe'),
               accountEmail: Text('johndoe@example.com'),
               currentAccountPicture: CircleAvatar(
@@ -74,8 +56,8 @@ class _HomeState extends State<Home> {
               ),
             ),
             ListTile(
-              leading: Icon(Icons.person_4_outlined),
-              title: Text(
+              leading: const Icon(Icons.person_4_outlined),
+              title: const Text(
                 'Profil Saya',
                 style: TextStyle(
                   color: Colors.black,
@@ -84,13 +66,13 @@ class _HomeState extends State<Home> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Profile()),
+                  MaterialPageRoute(builder: (context) => const Profile()),
                 );
               },
             ),
             ListTile(
-              leading: Icon(Icons.info_outline),
-              title: Text(
+              leading: const Icon(Icons.info_outline),
+              title: const Text(
                 'Info Aplikasi',
                 style: TextStyle(
                   color: Colors.black,
@@ -101,8 +83,8 @@ class _HomeState extends State<Home> {
               },
             ),
             ListTile(
-              leading: Icon(Icons.help_outline),
-              title: Text(
+              leading: const Icon(Icons.help_outline),
+              title: const Text(
                 'Pusat Bantuan',
                 style: TextStyle(
                   color: Colors.black,
@@ -116,7 +98,7 @@ class _HomeState extends State<Home> {
         ),
       ),
       body: isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : lands.isEmpty
               ? Center(
                   child: Column(
@@ -134,27 +116,28 @@ class _HomeState extends State<Home> {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => Sensor()),
+                            MaterialPageRoute(
+                                builder: (context) => const Sensor()),
                           );
                           print('Tombol ditekan!');
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFF2E5F4C),
+                          backgroundColor: const Color(0xFF2E5F4C),
                           foregroundColor: Colors.white,
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               horizontal: 75, vertical: 15),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
-                        child: Text('Mulai'),
+                        child: const Text('Mulai'),
                       ),
                     ],
                   ),
                 )
               : Column(
                   children: [
-                    Padding(
+                    const Padding(
                       padding: EdgeInsets.only(top: 10.0, left: 10.0),
                       child: Align(
                         alignment: Alignment.centerLeft,
@@ -172,35 +155,36 @@ class _HomeState extends State<Home> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        SizedBox(
+                        const SizedBox(
                             width:
                                 10), // SizedBox untuk memberi jarak horizontal antara tombol
                         Padding(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               vertical: 10.0), // Padding atas dan bawah
                           child: ElevatedButton(
                             onPressed: () {
                               Route route = MaterialPageRoute(
-                                builder: (context) => Bluetooth(),
+                                builder: (context) => FlutterBlueApp(),
                               );
                               Navigator.push(context, route);
                             },
                             style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
+                              backgroundColor: WidgetStateProperty.all<Color>(
                                   Colors.orange), // Warna background button
-                              shape: MaterialStateProperty.all<
+                              shape: WidgetStateProperty.all<
                                   RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(
                                       10.0), // Bentuk border button
                                 ),
                               ),
-                              minimumSize: MaterialStateProperty.all<Size>(
-                                  Size(50.0, 85.0)), // Ukuran minimum button
+                              minimumSize: WidgetStateProperty.all<Size>(
+                                  const Size(
+                                      50.0, 85.0)), // Ukuran minimum button
                             ),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
+                              children: const <Widget>[
                                 Icon(
                                   Icons.bluetooth,
                                   color: Colors.white, // Warna icon
@@ -219,32 +203,33 @@ class _HomeState extends State<Home> {
                             ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                             width:
                                 10), // SizedBox untuk memberi jarak horizontal antara tombol
                         Padding(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               vertical: 10.0), // Padding atas dan bawah
                           child: ElevatedButton(
                             onPressed: () {
                               // Tambahkan fungsi onPressed sesuai kebutuhan
                             },
                             style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
+                              backgroundColor: WidgetStateProperty.all<Color>(
                                   Colors.orange), // Warna background button
-                              shape: MaterialStateProperty.all<
+                              shape: WidgetStateProperty.all<
                                   RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(
                                       10.0), // Bentuk border button
                                 ),
                               ),
-                              minimumSize: MaterialStateProperty.all<Size>(
-                                  Size(50.0, 85.0)), // Ukuran minimum button
+                              minimumSize: WidgetStateProperty.all<Size>(
+                                  const Size(
+                                      50.0, 85.0)), // Ukuran minimum button
                             ),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
+                              children: const <Widget>[
                                 Icon(
                                   Icons.control_point_duplicate_sharp,
                                   color: Colors.white, // Warna icon
@@ -264,7 +249,7 @@ class _HomeState extends State<Home> {
                         ),
                       ],
                     ),
-                    Padding(
+                    const Padding(
                       padding: EdgeInsets.only(left: 10.0),
                       child: Align(
                         alignment: Alignment.centerLeft,
@@ -285,14 +270,14 @@ class _HomeState extends State<Home> {
                         itemBuilder: (context, index) {
                           final land = lands[index];
                           return Card(
-                            margin: EdgeInsets.all(10),
+                            margin: const EdgeInsets.all(10),
                             color: Colors.white,
                             elevation: 5,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15),
                             ),
                             child: ListTile(
-                              contentPadding: EdgeInsets.all(15),
+                              contentPadding: const EdgeInsets.all(15),
                               title: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -302,20 +287,20 @@ class _HomeState extends State<Home> {
                                     children: [
                                       Text(
                                         'Lahan: ${land.id}',
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                           color: Colors.black,
                                         ),
                                       ),
                                       Container(
-                                        padding: EdgeInsets.symmetric(
+                                        padding: const EdgeInsets.symmetric(
                                             vertical: 5, horizontal: 10),
                                         decoration: BoxDecoration(
                                           color: Colors.green[800],
                                           borderRadius:
                                               BorderRadius.circular(5),
                                         ),
-                                        child: Text(
+                                        child: const Text(
                                           'Normal',
                                           style: TextStyle(
                                             color: Colors.white,
@@ -325,7 +310,7 @@ class _HomeState extends State<Home> {
                                       ),
                                     ],
                                   ),
-                                  Divider(
+                                  const Divider(
                                     color: Colors.grey,
                                     thickness: 1,
                                   ),
@@ -334,7 +319,7 @@ class _HomeState extends State<Home> {
                               subtitle: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
+                                  const Text(
                                       'Lahan tidak mempunyai faktor pembatas yang berarti atau nyata terhadap penggunaan berkelanjutan, atau hanya mempunyai faktor pembatas yang bersifat minor dan tidak mereduksi produktivitas lahan secara nyata. Rata Rata Unsur Hara Tanah'),
                                   Text('Natrium: ${land.averageNatrium}'),
                                   Text('Fosfor: ${land.averageFosfor}'),
@@ -351,12 +336,12 @@ class _HomeState extends State<Home> {
                                       },
                                       style: ButtonStyle(
                                         backgroundColor:
-                                            MaterialStateProperty.all<Color>(
+                                            WidgetStateProperty.all<Color>(
                                                 Colors.black),
                                         foregroundColor:
-                                            MaterialStateProperty.all<Color>(
+                                            WidgetStateProperty.all<Color>(
                                                 Colors.white),
-                                        shape: MaterialStateProperty.all<
+                                        shape: WidgetStateProperty.all<
                                             RoundedRectangleBorder>(
                                           RoundedRectangleBorder(
                                             borderRadius:
@@ -364,7 +349,7 @@ class _HomeState extends State<Home> {
                                           ),
                                         ),
                                       ),
-                                      child: Text('Detail'),
+                                      child: const Text('Detail'),
                                     ),
                                   ),
                                 ],

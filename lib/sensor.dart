@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 class Sensor extends StatefulWidget {
+  const Sensor({super.key});
+
   @override
   SensorState createState() => SensorState();
 }
@@ -16,7 +18,7 @@ class SensorState extends State<Sensor> {
   void initState() {
     super.initState();
     // Set timer to update the gauge values every 3 seconds
-    Timer.periodic(Duration(seconds: 3), (Timer t) {
+    Timer.periodic(const Duration(seconds: 3), (Timer t) {
       setState(() {
         for (int i = 0; i < values.length; i++) {
           values[i] =
@@ -30,14 +32,14 @@ class SensorState extends State<Sensor> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sensor'),
-        backgroundColor: Color(0xFF2E5F4C), // Warna latar belakang AppBar
-        titleTextStyle: TextStyle(
+        title: const Text('Sensor'),
+        backgroundColor: const Color(0xFF2E5F4C), // Warna latar belakang AppBar
+        titleTextStyle: const TextStyle(
           color: Colors.white, // Warna teks AppBar
           fontSize: 20, // Ukuran teks
           fontWeight: FontWeight.bold, // Ketebalan teks
         ),
-        iconTheme: IconThemeData(
+        iconTheme: const IconThemeData(
           color: Colors.white, // Warna ikon panah kembali
         ),
       ),
@@ -61,7 +63,7 @@ class SensorState extends State<Sensor> {
                 ],
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ), // Spacer untuk memberi jarak antara GridView dan tombol
             ElevatedButton(
@@ -71,17 +73,17 @@ class SensorState extends State<Sensor> {
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor:
-                    Color(0xFF2E5F4C), // Warna latar belakang tombol
+                    const Color(0xFF2E5F4C), // Warna latar belakang tombol
                 foregroundColor: Colors.white, // Warna teks tombol
-                padding: EdgeInsets.symmetric(
+                padding: const EdgeInsets.symmetric(
                     horizontal: 50, vertical: 15), // Ukuran tombol
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10), // Border radius 5px
                 ),
               ),
-              child: Text('Selanjutnya'),
+              child: const Text('Selanjutnya'),
             ),
-            SizedBox(height: 50), // Spacer tambahan di bawah tombol
+            const SizedBox(height: 50), // Spacer tambahan di bawah tombol
           ],
         ),
       ),
@@ -91,24 +93,24 @@ class SensorState extends State<Sensor> {
   // Fungsi untuk menentukan warna latar belakang berdasarkan nilai
   Color getBackgroundColor(int index) {
     if (index == 0) {
-      return Color.fromARGB(255, 253, 255, 224); 
+      return const Color.fromARGB(255, 253, 255, 224); 
     }
     if (index == 1) {
-      return Color.fromARGB(255, 209, 255, 229); 
+      return const Color.fromARGB(255, 209, 255, 229); 
     }
     if (index == 2) {
-      return Color.fromARGB(255, 209, 255, 229);
+      return const Color.fromARGB(255, 209, 255, 229);
     }
     if (index == 3) {
-      return Color.fromARGB(255, 253, 255, 224); 
+      return const Color.fromARGB(255, 253, 255, 224); 
     }
     if (index == 4) {
-      return Color.fromARGB(255, 253, 255, 224); 
+      return const Color.fromARGB(255, 253, 255, 224); 
     }
     if (index == 5) {
-      return Color.fromARGB(255, 209, 255, 229);
+      return const Color.fromARGB(255, 209, 255, 229);
     } else {
-      return Color.fromARGB(255, 253, 255, 224); 
+      return const Color.fromARGB(255, 253, 255, 224); 
     }
   }
 
@@ -129,7 +131,7 @@ class SensorState extends State<Sensor> {
           children: [
             Text(
               title, // Menggunakan parameter title untuk teks
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 18,
               ),
             ),
@@ -161,7 +163,7 @@ class SensorState extends State<Sensor> {
                         widget: Container(
                           child: Text(
                             value.toStringAsFixed(1),
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
                             ),
@@ -183,7 +185,7 @@ class SensorState extends State<Sensor> {
 }
 
 void main() {
-  runApp(MaterialApp(
+  runApp(const MaterialApp(
     home: Sensor(),
   ));
 }

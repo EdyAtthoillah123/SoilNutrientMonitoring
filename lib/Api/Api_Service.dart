@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:soil_nutrient/homepage.dart';
@@ -40,10 +38,9 @@ class Land {
   }
 }
 
-
 Future<void> registerUser(
     String username, String email, String password) async {
-  final apiUrl = Uri.parse('http://192.168.1.13:8000/api/register/');
+  final apiUrl = Uri.parse(ApiConnect.register);
 
   final response = await http.post(
     apiUrl,
@@ -73,7 +70,7 @@ Future<void> registerUser(
       msg: 'Registrasi Gagal',
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.BOTTOM,
-      backgroundColor: Color.fromARGB(255, 255, 125, 116),
+      backgroundColor: const Color.fromARGB(255, 255, 125, 116),
       textColor: Colors.white,
       fontSize: 16.0,
     );
@@ -81,11 +78,11 @@ Future<void> registerUser(
 }
 
 Future<void> loginUser(
-  BuildContext context, String email, String password) async {
-  print('Email: $email'); // Mencetak email
-  print('Password: $password'); // Mencetak password
+    BuildContext context, String email, String password) async {
+  print('Email: $email');
+  print('Password: $password');
 
-  final apiUrl = Uri.parse('http://192.168.1.13:8000/api/login/');
+  final apiUrl = Uri.parse(ApiConnect.login);
 
   try {
     final response = await http.post(
@@ -101,7 +98,7 @@ Future<void> loginUser(
       final data = jsonDecode(response.body);
       // Navigasi ke halaman Home
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => Home()),
+        MaterialPageRoute(builder: (context) => const Home()),
       );
       // Tampilkan pesan login berhasil
       Fluttertoast.showToast(
@@ -137,74 +134,25 @@ Future<void> loginUser(
   }
 }
 
-class Berita {
-  final int id;
-  final String image;
-  final String judul;
-  final String deskripsi;
-  final String tanggal;
-
-  Berita(
-      {required this.id,
-      required this.judul,
-      required this.deskripsi,
-      required this.tanggal,
-      required this.image});
-
-  factory Berita.fromJson(Map<String, dynamic> json) {
-    return Berita(
-      id: json['id'],
-      image: json['image'],
-      judul: json['title'],
-      deskripsi: json['description'],
-      tanggal: json['created_at'],
-    );
-  }
-}
-
-Future<List<Berita>> fetchBerita() async {
-  final response = await http.get(Uri.parse(ApiConnect.berita));
+Future<List<Land>> fetchLands() async {
+  final response = await http.get(Uri.parse(ApiConnect.lands));
 
   if (response.statusCode == 200) {
-    final List<dynamic> responseData = json.decode(response.body);
-    final List<Berita> users =
-        responseData.map((json) => Berita.fromJson(json)).toList();
-    return users;
+    final List<dynamic> landsJson = json.decode(response.body)['lands'];
+    return landsJson.map((json) => Land.fromJson(json)).toList();
   } else {
-    throw Exception('Failed to fetch data');
+    throw Exception('Failed to load lands');
   }
 }
 
-class ImageTanaman {
-  final int id;
-  final String image;
-  final String tanaman;
-
-  ImageTanaman({required this.id, required this.image, required this.tanaman});
-
-  factory ImageTanaman.fromJson(Map<String, dynamic> json) {
-    return ImageTanaman(
-      id: json['id'],
-      image: json['imagepath'],
-      tanaman: json['tanaman'],
-    );
-  }
-}
-
-Future<List<ImageTanaman>> fetchImage() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  String email = prefs.getString('email') ?? '';
-
-  final response = await http.get(Uri.parse(ApiConnect.rekap + '/' + '$email'));
-
-  if (response.statusCode == 200) {
-    final Map<String, dynamic> responseData = json.decode(response.body);
-    final List<dynamic> userImages =
-        responseData['user']; // Ambil daftar gambar dari respons JSON
-    final List<ImageTanaman> images =
-        userImages.map((json) => ImageTanaman.fromJson(json)).toList();
-    return images;
-  } else {
-    throw Exception('Failed to fetch data');
+Future<void> fetchAndSetLands(
+    Function(List<Land>) setLands, Function(bool) setLoading) async {
+  try {
+    final fetchedLands = await fetchLands();
+    setLands(fetchedLands);
+  } catch (e) {
+    print('Error fetching lands: $e');
+  } finally {
+    setLoading(false);
   }
 }

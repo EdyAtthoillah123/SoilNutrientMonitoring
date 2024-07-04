@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'homepage.dart';
 import 'register.dart';
 import 'package:flutter/gestures.dart';
 import 'Api/Api_Service.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({super.key});
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -19,7 +18,7 @@ class _LoginScreenState extends State<LoginScreen> {
     Navigator.push(
       context,
       PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) => RegisterScreen(),
+        pageBuilder: (context, animation, secondaryAnimation) => const RegisterScreen(),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           const begin = Offset(1.0, 0.0);
           const end = Offset.zero;
@@ -52,8 +51,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   // Title
-                  SizedBox(height: 50.0),
-                  Text(
+                  const SizedBox(height: 50.0),
+                  const Text(
                     'Masuk',
                     style: TextStyle(
                       fontSize: 28,
@@ -61,17 +60,17 @@ class _LoginScreenState extends State<LoginScreen> {
                       fontFamily: 'Poppins',
                     ),
                   ),
-                  SizedBox(height: 10.0),
+                  const SizedBox(height: 10.0),
 
                   // Subtitle
-                  Text(
+                  const Text(
                     'Silahkan masuk untuk melanjutkan',
                     style: TextStyle(
                       fontSize: 16,
                       fontFamily: 'Poppins',
                     ),
                   ),
-                  SizedBox(height: 30.0),
+                  const SizedBox(height: 30.0),
 
                   // Form
                   Form(
@@ -79,7 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         // Email Field
-                        Align(
+                        const Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
                             'Email',
@@ -91,7 +90,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         TextFormField(
                           controller: emailController,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             hintText: 'Masukkan email',
                           ),
@@ -105,10 +104,10 @@ class _LoginScreenState extends State<LoginScreen> {
                             return null;
                           },
                         ),
-                        SizedBox(height: 16.0),
+                        const SizedBox(height: 16.0),
 
                         // Password Field
-                        Align(
+                        const Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
                             'Password',
@@ -120,7 +119,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         TextFormField(
                           controller: passwordController,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             hintText: 'Masukkan password',
                           ),
@@ -132,10 +131,10 @@ class _LoginScreenState extends State<LoginScreen> {
                             return null;
                           },
                         ),
-                        SizedBox(height: 10.0),
+                        const SizedBox(height: 10.0),
 
                         // Forgot Password
-                        Align(
+                        const Align(
                           alignment: Alignment.centerRight,
                           child: Text(
                             'Lupa kata sandi?',
@@ -144,7 +143,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 30.0),
+                        const SizedBox(height: 30.0),
 
                         // Login Button
                         Center(
@@ -160,15 +159,15 @@ class _LoginScreenState extends State<LoginScreen> {
                                     loginUser(context, email, password);
                                   },
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor: Color(0xFF2E5F4C),
+                                    backgroundColor: const Color(0xFF2E5F4C),
                                     foregroundColor: Colors.white,
-                                    padding: EdgeInsets.symmetric(
+                                    padding: const EdgeInsets.symmetric(
                                         horizontal: 50, vertical: 15),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                   ),
-                                  child: Text(
+                                  child: const Text(
                                     'Masuk',
                                     style: TextStyle(
                                       fontFamily: 'Poppins',
@@ -177,15 +176,15 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                 ),
                               ),
-                              SizedBox(height: 10.0),
+                              const SizedBox(height: 10.0),
                               Text.rich(
                                 TextSpan(
                                   text: 'Belum memiliki akun? ',
-                                  style: TextStyle(color: Colors.black),
+                                  style: const TextStyle(color: Colors.black),
                                   children: [
                                     TextSpan(
                                       text: 'Daftar',
-                                      style: TextStyle(color: Colors.green),
+                                      style: const TextStyle(color: Colors.green),
                                       recognizer: TapGestureRecognizer()
                                         ..onTap = _goToRegister,
                                     ),

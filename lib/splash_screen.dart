@@ -3,7 +3,7 @@ import 'dart:async';
 import 'login.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({Key? key}) : super(key: key);
+  const SplashScreen({super.key});
 
   @override
   _SplashScreenState createState() => _SplashScreenState();
@@ -34,10 +34,10 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   void _navigateToLogin() async {
-    await Future.delayed(Duration(seconds: 3), () {});
+    await Future.delayed(const Duration(seconds: 3), () {});
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => LoginScreen()),
+      MaterialPageRoute(builder: (context) => const LoginScreen()),
     );
   }
 
@@ -53,7 +53,7 @@ class _SplashScreenState extends State<SplashScreen>
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [
               Color(0xFF2E5F4C),
@@ -75,10 +75,10 @@ class _SplashScreenState extends State<SplashScreen>
                 width: 150,
               ),
             ),
-            SizedBox(height: 14.0),
+            const SizedBox(height: 14.0),
             FadeTransition(
               opacity: _animation!,
-              child: Text(
+              child: const Text(
                 'Soil Nutrient Monitoring',
                 style: TextStyle(
                   color: Colors.white,
@@ -87,8 +87,8 @@ class _SplashScreenState extends State<SplashScreen>
                 ),
               ),
             ),
-            SizedBox(height: 20.0),
-            CircularProgressIndicator(
+            const SizedBox(height: 20.0),
+            const CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
               backgroundColor: Color.fromARGB(190, 255, 255, 255),
             ),

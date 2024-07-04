@@ -9,7 +9,7 @@ class BleController extends GetxController {
   Future<void> scanDevices() async {
     if (await Permission.bluetoothScan.request().isGranted) {
       if (await Permission.bluetoothConnect.request().isGranted) {
-        ble.startScan(timeout: Duration(seconds: 10));
+        ble.startScan(timeout: const Duration(seconds: 10));
         ble.stopScan();
       }
     }
