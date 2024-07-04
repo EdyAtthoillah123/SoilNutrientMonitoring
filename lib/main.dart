@@ -1,24 +1,36 @@
 import 'package:flutter/material.dart';
-import 'package:soil_nutrient/splash_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'homepage.dart';
+import 'login.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  // Cek apakah email sudah tersimpan di SharedPreferences
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String? storedEmail = prefs.getString('email');
+
+  // Tentukan halaman awal berdasarkan keberadaan email di SharedPreferences
+  Widget initialPage = storedEmail != null ? const Home() : const LoginScreen();
+
+  runApp(MyApp(initialPage: initialPage));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  final Widget initialPage;
 
-  // This widget is the root of your application.
+  // Tambahkan constructor dengan parameter initialPage yang diperlukan
+  const MyApp({required this.initialPage});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'My App',
       debugShowCheckedModeBanner: false,
-      title: 'NutriSoil',
       theme: ThemeData(
-        primarySwatch: Colors.green,
+        primarySwatch: Colors.blue,
       ),
-      home:SplashScreen(),
+      home: initialPage,
     );
   }
 }
-

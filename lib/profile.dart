@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'login.dart';
 
 class Profile extends StatefulWidget {
@@ -9,6 +10,18 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  Future<void> _logOut() async {
+    // Hapus data email dari SharedPreferences
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('email');
+
+    // Navigasi kembali ke halaman LoginScreen
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => LoginScreen()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,14 +30,14 @@ class _ProfileState extends State<Profile> {
           'Nutrisoil',
           style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: Color(0xFF2E5F4C), // Warna latar belakang AppBar
+        backgroundColor: Color(0xFF2E5F4C),
         titleTextStyle: TextStyle(
-          color: Colors.white, // Warna teks AppBar
-          fontSize: 20, // Ukuran teks
-          fontWeight: FontWeight.bold, // Ketebalan teks
+          color: Colors.white,
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
         ),
         iconTheme: IconThemeData(
-          color: Colors.white, // Warna ikon panah kembali
+          color: Colors.white,
         ),
       ),
       body: Column(
@@ -33,19 +46,17 @@ class _ProfileState extends State<Profile> {
             padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
             child: Card(
               child: ListTile(
-                contentPadding: EdgeInsets.symmetric(
-                    horizontal: 20, vertical: 10), // Padding di dalam ListTile
+                contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 title: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     CircleAvatar(
-                      radius: 38, // Setengah dari ukuran yang Anda inginkan (76 / 2)
-                      backgroundImage: AssetImage(
-                          'assets/images/profile.png'), // Ganti dengan path gambar profil Anda
+                      radius: 38,
+                      backgroundImage: AssetImage('assets/images/profile.png'),
                     ),
                     SizedBox(height: 10),
                     Text(
-                      'John Doe', // Ganti dengan nama pengguna yang sesuai
+                      'John Doe',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ],
@@ -56,7 +67,7 @@ class _ProfileState extends State<Profile> {
           SizedBox(height: 20),
           Column(
             children: <Widget>[
-             ListTile(
+              ListTile(
                 leading: Icon(Icons.mail),
                 title: Text('Ubah Email'),
                 onTap: () {
@@ -83,12 +94,9 @@ class _ProfileState extends State<Profile> {
               ListTile(
                 leading: Icon(Icons.exit_to_app),
                 title: Text('Keluar'),
-                 onTap: () {
-                  // Navigasi ke layar login ketika "Keluar" di tap
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => LoginScreen()),
-                  );
+                onTap: () {
+                  // Panggil fungsi log out saat "Keluar" diklik
+                  _logOut();
                 },
               ),
               Divider(),
