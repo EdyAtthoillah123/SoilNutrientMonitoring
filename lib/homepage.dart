@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:soil_nutrient/profile.dart';
+import 'detailLand.dart';
 import 'Api/Api_Service.dart';
+import 'Api/Api_Connect.dart';
+import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'login.dart';
-
+import 'profile.dart';
+import 'dart:convert';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class Home extends StatefulWidget {
-  const Home({super.key});
+  const Home({Key? key}) : super(key: key);
 
   @override
   _HomeState createState() => _HomeState();
@@ -15,11 +19,68 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   List<Land> lands = [];
   bool isLoading = true;
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _locationController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     fetchLands();
+  }
+
+  void _submitForm() {
+    if (_formKey.currentState?.validate() ?? false) {
+      final location = _locationController.text;
+      postLocation(location);
+    }
+  }
+
+  Future<void> printLandId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int? landId = prefs.getInt('idLahan'); // Retrieve the saved land ID
+    print('Saved Land ID: $landId'); // Print the land ID
+  }
+
+  Future<void> postLocation(String location) async {
+    final apiUrl = Uri.parse(ApiConnect.createland);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? email = prefs.getString('email');
+
+    print('Email: $email');
+    print('Location: $location');
+
+    final response = await http.post(
+      apiUrl,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: json.encode({
+        'lokasi': location,
+        'email': email,
+      }),
+    );
+
+    if (response.statusCode == 201) {
+      Fluttertoast.showToast(
+        msg: 'Berhasil Ditambahkan',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: const Color.fromARGB(255, 172, 255, 174),
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+      fetchLands(); // Refresh list of lands
+    } else {
+      print('Error: ${response.body}'); // Log the response body for more info
+      Fluttertoast.showToast(
+        msg: 'Gagal Ditambahkan',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: const Color.fromARGB(255, 255, 125, 116),
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    }
   }
 
   Future<void> fetchLands() async {
@@ -33,23 +94,146 @@ class _HomeState extends State<Home> {
       setState(() {
         isLoading = false;
       });
-      // Handle the error appropriately
       print(error);
     }
   }
 
-   Future<void> _logOut() async {
-    // Hapus data email dari SharedPreferences
+  Future<void> _logOut() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove('email');
-
-    // Navigasi kembali ke halaman LoginScreen
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => LoginScreen()),
     );
   }
 
+  Widget detailRow(String title, dynamic value, IconData icon, String unit) {
+    String formattedValue =
+        value is double ? value.toStringAsFixed(3) : value.toString();
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5),
+      child: Row(
+        children: [
+          Icon(icon, color: Color(0xFF2E5F4C)),
+          SizedBox(width: 10),
+          Text(
+            '$title: $formattedValue $unit',
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.black87,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void navigateToDetailScreen(int landId) {
+    Navigator.push(
+      context,
+      PageRouteBuilder(
+        transitionDuration: Duration(milliseconds: 200),
+        pageBuilder: (context, animation, secondaryAnimation) {
+          return FadeTransition(
+            opacity: animation,
+            child: DetailLandScreen(landId: landId),
+          );
+        },
+      ),
+    );
+  }
+
+  void _showAddDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(5),
+          ),
+          backgroundColor: Colors.white,
+          title: Text(
+            'Tambah Lahan Baru',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                TextFormField(
+                  controller: _locationController,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: 'Masukkan lokasi',
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter the location';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 16.0),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            Row(
+              mainAxisAlignment:
+                  MainAxisAlignment.end, // Align buttons to the right
+              children: <Widget>[
+                TextButton(
+                  style: TextButton.styleFrom(
+                    backgroundColor: Colors.black,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5), // Less rounded
+                    ),
+                  ),
+                  child: Text(
+                    'Batal',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 12,
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                SizedBox(width: 16.0), // Spacer between buttons
+                ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState?.validate() ?? false) {
+                      Navigator.of(context).pop();
+                      _submitForm();
+                      _locationController.clear();
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF2E5F4C),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(4), // Less rounded
+                    ),
+                  ),
+                  child: Text(
+                    'Submit',
+                    style: TextStyle(
+                        color: Colors.white), // Set text color to white
+                  ),
+                ),
+              ],
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,8 +258,8 @@ class _HomeState extends State<Home> {
           padding: EdgeInsets.zero,
           children: [
             const UserAccountsDrawerHeader(
-              accountName: Text('John Doe'),
-              accountEmail: Text('johndoe@example.com'),
+              accountName: Text(''),
+              accountEmail: Text('User Soil Nutrients'),
               currentAccountPicture: CircleAvatar(
                 backgroundImage: AssetImage('assets/images/profile.png'),
               ),
@@ -122,7 +306,7 @@ class _HomeState extends State<Home> {
                 // Navigate to the help center page
               },
             ),
-             ListTile(
+            ListTile(
               leading: const Icon(Icons.exit_to_app),
               title: const Text(
                 'Log Out',
@@ -131,7 +315,7 @@ class _HomeState extends State<Home> {
                 ),
               ),
               onTap: () {
-                 _logOut();
+                _logOut();
               },
             ),
           ],
@@ -153,14 +337,7 @@ class _HomeState extends State<Home> {
                         ),
                       ),
                       ElevatedButton(
-                        onPressed: () {
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //       builder: (context) => const Sensor()),
-                          // );
-                          // print('Button pressed!');
-                        },
+                        onPressed: () => _showAddDialog(context),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF2E5F4C),
                           foregroundColor: Colors.white,
@@ -177,18 +354,54 @@ class _HomeState extends State<Home> {
                 )
               : Column(
                   children: [
-                    const Padding(
-                      padding: EdgeInsets.only(left: 10.0),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Padding(
-                          padding: EdgeInsets.only(bottom: 10.0, top: 10.0),
-                          child: Text(
-                            "Rekap Pengukuran Lahan",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
+                    Card(
+                      margin: const EdgeInsets.only(
+                          top: 20, bottom: 0, left: 16, right: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                        side: BorderSide(
+                          color: const Color(0xFF2E5F4C),
+                          width: 2,
+                        ),
+                      ),
+                      elevation: 5,
+                      child: Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              'Semua Lahan',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
+                            ElevatedButton(
+                              onPressed: () => _showAddDialog(context),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xFF2E5F4C),
+                                foregroundColor: Colors.white,
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 5),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              child: Row(
+                                children: const [
+                                  Icon(Icons.add),
+                                  SizedBox(width: 5),
+                                  Text(
+                                    'Tambah',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -197,79 +410,158 @@ class _HomeState extends State<Home> {
                         itemCount: lands.length,
                         itemBuilder: (context, index) {
                           final land = lands[index];
-                          return Card(
-                            margin: const EdgeInsets.all(10),
-                            color: Colors.white,
-                            elevation: 5,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            child: ListTile(
-                              contentPadding: const EdgeInsets.all(15),
-                              title: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          return Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Card(
+                              elevation: 2,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                side: BorderSide(
+                                  color: const Color(0xFF2E5F4C),
+                                  width: 1,
+                                ),
+                              ),
+                              child: InkWell(
+                                onTap: () {
+                                  navigateToDetailScreen(land.id!);
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      Text(
-                                        'Lahan: ${land.id}',
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black,
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              'Lahan ${land.id}',
+                                              style: const TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                          Text(
+                                            'Location: ${land.lokasi}',
+                                            style: const TextStyle(
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 10),
+                                        child: Text(
+                                          'Klasifikasi Lahan: ${land.recommendation}',
+                                          style: TextStyle(fontSize: 14),
+                                          overflow: TextOverflow
+                                              .ellipsis, // Add this to handle overflow
+                                          maxLines: 4, // Limit to 2 lines
                                         ),
                                       ),
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 5, horizontal: 10),
-                                        decoration: BoxDecoration(
-                                          color: Colors.green[800],
-                                          borderRadius: BorderRadius.circular(5),
-                                        ),
-                                        child: const Text(
-                                          'Normal',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.normal,
+                                      const SizedBox(height: 10),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          detailRow(
+                                            'Nitrogen',
+                                            land.averageNitrogen,
+                                            Icons.grass,
+                                            'mg/kg',
+                                          ),
+                                          // Text(
+                                          //   '(${land.category_nitrogen})',
+                                          //   style: TextStyle(fontSize: 14),
+                                          // ),
+                                        ],
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          detailRow(
+                                            'Fosfor',
+                                            land.averageFosfor,
+                                            Icons.grass,
+                                            'mg/kg',
+                                          ),
+                                          // Text(
+                                          //   '(${land.category_fosfor})',
+                                          //   style: TextStyle(fontSize: 14),
+                                          // ),
+                                        ],
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          detailRow(
+                                            'Kalium',
+                                            land.averageKalium,
+                                            Icons.grass,
+                                            'mg/kg',
+                                          ),
+                                          // Text(
+                                          //   '(${land.category_kalium})',
+                                          //   style: TextStyle(fontSize: 14),
+                                          // ),
+                                        ],
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          detailRow(
+                                            'Ph',
+                                            land.averagePh,
+                                            Icons.grass,
+                                            '',
+                                          ),
+                                          // Text(
+                                          //   '(${land.category_ph})',
+                                          //   style: TextStyle(fontSize: 14),
+                                          // ),
+                                        ],
+                                      ),
+                                      detailRow(
+                                          'Moisture',
+                                          land.averageMoisture,
+                                          Icons.water,
+                                          '%'),
+                                      detailRow(
+                                          'Temperature',
+                                          land.averageTemperature,
+                                          Icons.thermostat,
+                                          '°C'),
+                                      Align(
+                                        alignment: Alignment.centerRight,
+                                        child: TextButton(
+                                          onPressed: () {
+                                            navigateToDetailScreen(land.id);
+                                          },
+                                          style: TextButton.styleFrom(
+                                            backgroundColor: Colors.black,
+                                            foregroundColor: Colors.white,
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 10, horizontal: 16),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                            ),
+                                          ),
+                                          child: Text(
+                                            'Detail',
+                                            style: TextStyle(fontSize: 12),
                                           ),
                                         ),
                                       ),
                                     ],
                                   ),
-                                  const Divider(
-                                    color: Colors.grey,
-                                    thickness: 1,
-                                  ),
-                                ],
-                              ),
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                      'Lahan tidak mempunyai faktor pembatas yang berarti atau nyata terhadap penggunaan berkelanjutan, atau hanya mempunyai faktor pembatas yang bersifat minor dan tidak mereduksi produktivitas lahan secara nyata. Rata Rata Unsur Hara Tanah'),
-                                  Text('Natrium: ${land.averageNatrium}'),
-                                  Text('Fosfor: ${land.averageFosfor}'),
-                                  Text('Kalium: ${land.averageKalium}'),
-                                  Text('pH: ${land.averagePh}'),
-                                  Text('Moisture: ${land.averageMoisture}'),
-                                  Text('Temperature: ${land.averageTemperature}'),
-                                  Align(
-                                    alignment: Alignment.centerRight,
-                                    child: TextButton(
-                                      onPressed: () {
-                                        // Handle button press
-                                      },
-                                      style: TextButton.styleFrom(
-                                        backgroundColor: Colors.black,
-                                        foregroundColor: Colors.white,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(5),
-                                        ),
-                                      ),
-                                      child: const Text('Detail'),
-                                    ),
-                                  ),
-                                ],
+                                ),
                               ),
                             ),
                           );

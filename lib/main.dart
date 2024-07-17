@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'homepage.dart';
-import 'login.dart';
+import 'splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -11,7 +11,7 @@ void main() async {
   String? storedEmail = prefs.getString('email');
 
   // Tentukan halaman awal berdasarkan keberadaan email di SharedPreferences
-  Widget initialPage = storedEmail != null ? const Home() : const LoginScreen();
+  Widget initialPage = storedEmail != null ? const Home() : const SplashScreen();
 
   runApp(MyApp(initialPage: initialPage));
 }

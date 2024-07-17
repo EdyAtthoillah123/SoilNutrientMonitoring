@@ -8,4 +8,10 @@ class ApiConnect {
   static const login = "$host/api/login/";
 
   static const lands = "$host/api/showland";
+
+  static const detaillands = "$host/api/lands";
+
+  static const createland = "$host/api/lands/"; 
+
+  static const createdetailland = "$host/api/detail-lands/"; 
 }
