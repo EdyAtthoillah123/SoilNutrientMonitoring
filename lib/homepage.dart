@@ -473,10 +473,6 @@ class _HomeState extends State<Home> {
                                             Icons.grass,
                                             'mg/kg',
                                           ),
-                                          // Text(
-                                          //   '(${land.category_nitrogen})',
-                                          //   style: TextStyle(fontSize: 14),
-                                          // ),
                                         ],
                                       ),
                                       Row(
@@ -489,10 +485,6 @@ class _HomeState extends State<Home> {
                                             Icons.grass,
                                             'mg/kg',
                                           ),
-                                          // Text(
-                                          //   '(${land.category_fosfor})',
-                                          //   style: TextStyle(fontSize: 14),
-                                          // ),
                                         ],
                                       ),
                                       Row(
@@ -505,10 +497,6 @@ class _HomeState extends State<Home> {
                                             Icons.grass,
                                             'mg/kg',
                                           ),
-                                          // Text(
-                                          //   '(${land.category_kalium})',
-                                          //   style: TextStyle(fontSize: 14),
-                                          // ),
                                         ],
                                       ),
                                       Row(
@@ -521,10 +509,6 @@ class _HomeState extends State<Home> {
                                             Icons.grass,
                                             '',
                                           ),
-                                          // Text(
-                                          //   '(${land.category_ph})',
-                                          //   style: TextStyle(fontSize: 14),
-                                          // ),
                                         ],
                                       ),
                                       detailRow(
