@@ -8,6 +8,7 @@ import 'login.dart';
 import 'profile.dart';
 import 'dart:convert';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'bluetooth_connect_screen.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -371,14 +372,21 @@ class _HomeState extends State<Home> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             const Text(
-                              'Semua Lahan',
+                              'Dashboard',
                               style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             ElevatedButton(
-                              onPressed: () => _showAddDialog(context),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const BluetoothConnectScreen()),
+                                );
+                              },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: const Color(0xFF2E5F4C),
                                 foregroundColor: Colors.white,
@@ -390,10 +398,10 @@ class _HomeState extends State<Home> {
                               ),
                               child: Row(
                                 children: const [
-                                  Icon(Icons.add),
+                                  Icon(Icons.bluetooth),
                                   SizedBox(width: 5),
                                   Text(
-                                    'Tambah',
+                                    'Hubungkan',
                                     style: TextStyle(
                                       fontSize: 16,
                                     ),
@@ -554,6 +562,15 @@ class _HomeState extends State<Home> {
                     ),
                   ],
                 ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _showAddDialog(context),
+        backgroundColor: const Color(0xFF2E5F4C),
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
+        shape: const CircleBorder(),
+      ),
     );
   }
 }

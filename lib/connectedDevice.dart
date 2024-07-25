@@ -48,7 +48,7 @@ class _ConnectedDevicePageState extends State<ConnectedDevicePage> {
   void initState() {
     super.initState();
     _findCharacteristics();
-     _printPreferences();
+    _printPreferences();
   }
 
   Future<void> _findCharacteristics() async {
@@ -201,7 +201,19 @@ class _ConnectedDevicePageState extends State<ConnectedDevicePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Connected Device'),
+        title: const Text(
+          'Nutrisoil',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: const Color(0xFF2E5F4C),
+        titleTextStyle: const TextStyle(
+          color: Colors.white,
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+        ),
+        iconTheme: const IconThemeData(
+          color: Colors.white,
+        ),
       ),
       body: Center(
         child: Column(
