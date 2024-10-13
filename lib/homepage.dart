@@ -9,6 +9,7 @@ import 'profile.dart';
 import 'dart:convert';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'bluetooth_connect_screen.dart';
+import 'connectedDevice.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -241,7 +242,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Nutrisoil',
+          'Soil Nutrient Monitoring',
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: const Color(0xFF2E5F4C),
@@ -467,7 +468,7 @@ class _HomeState extends State<Home> {
                                           style: TextStyle(fontSize: 14),
                                           overflow: TextOverflow
                                               .ellipsis, // Add this to handle overflow
-                                          maxLines: 4, // Limit to 2 lines
+                                          maxLines: 20, // Limit to 2 lines
                                         ),
                                       ),
                                       const SizedBox(height: 10),
@@ -479,7 +480,9 @@ class _HomeState extends State<Home> {
                                             'Nitrogen',
                                             land.averageNitrogen,
                                             Icons.grass,
-                                            'mg/kg',
+                                            'mg/kg (' +
+                                                land.category_nitrogen +
+                                                ')',
                                           ),
                                         ],
                                       ),
@@ -491,7 +494,9 @@ class _HomeState extends State<Home> {
                                             'Fosfor',
                                             land.averageFosfor,
                                             Icons.grass,
-                                            'mg/kg',
+                                            'mg/kg (' +
+                                                land.category_fosfor +
+                                                ')',
                                           ),
                                         ],
                                       ),
@@ -503,7 +508,9 @@ class _HomeState extends State<Home> {
                                             'Kalium',
                                             land.averageKalium,
                                             Icons.grass,
-                                            'mg/kg',
+                                            'mg/kg (' +
+                                                land.category_kalium +
+                                                ')',
                                           ),
                                         ],
                                       ),
@@ -515,7 +522,7 @@ class _HomeState extends State<Home> {
                                             'Ph',
                                             land.averagePh,
                                             Icons.grass,
-                                            '',
+                                            ' (' + land.category_ph + ')',
                                           ),
                                         ],
                                       ),
@@ -529,6 +536,66 @@ class _HomeState extends State<Home> {
                                           land.averageTemperature,
                                           Icons.thermostat,
                                           '°C'),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 10),
+                                        child: Text(
+                                          'Saran perbaikan lahan:',
+                                          style: TextStyle(fontSize: 14),
+                                          overflow: TextOverflow
+                                              .ellipsis, // Add this to handle overflow
+                                          maxLines: 20, // Limit to 2 lines
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 10),
+                                        child: Text(
+                                          '* ' + land.Perbaikan_pH,
+                                          style: TextStyle(fontSize: 14),
+                                          overflow: TextOverflow
+                                              .ellipsis, // Add this to handle overflow
+                                          maxLines: 20, // Limit to 2 lines
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 10),
+                                        child: Text(
+                                          '* ' + land.Perbaikan_N,
+                                          style: TextStyle(fontSize: 14),
+                                          overflow: TextOverflow
+                                              .ellipsis, // Add this to handle overflow
+                                          maxLines: 20, // Limit to 2 lines
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 10),
+                                        child: Text(
+                                          '* ' + land.Perbaikan_P,
+                                          style: TextStyle(fontSize: 14),
+                                          overflow: TextOverflow
+                                              .ellipsis, // Add this to handle overflow
+                                          maxLines: 20, // Limit to 2 lines
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 10),
+                                        child: Text(
+                                          '* ' + land.Perbaikan_K,
+                                          style: TextStyle(fontSize: 14),
+                                          overflow: TextOverflow
+                                              .ellipsis, // Add this to handle overflow
+                                          maxLines: 20, // Limit to 2 lines
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 10),
+                                        child: Text(
+                                          'Perlu ditambahkan jerami untuk menutupi permukaan tanah agar suhu netral.',
+                                          style: TextStyle(fontSize: 14),
+                                          overflow: TextOverflow
+                                              .ellipsis, // Add this to handle overflow
+                                          maxLines: 20, // Limit to 2 lines
+                                        ),
+                                      ),
                                       Align(
                                         alignment: Alignment.centerRight,
                                         child: TextButton(

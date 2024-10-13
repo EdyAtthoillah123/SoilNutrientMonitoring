@@ -24,16 +24,20 @@ class SensorState extends State<Sensor> {
   Timer? _countdownTimer; // Timer for countdown
 
   @override
-  void initState() {
-    super.initState();
-    Timer.periodic(Duration(seconds: 3), (Timer t) {
-      setState(() {
-        for (int i = 0; i < values.length; i++) {
-          values[i] = random.nextDouble() * 100; // Random value between 0 and 100
-        }
-      });
+void initState() {
+  super.initState();
+  Timer.periodic(Duration(seconds: 15), (Timer t) {
+    setState(() {
+      values[0] = random.nextDouble() * 100; // Nitrogen
+      values[1] = random.nextDouble() * 100; // Phosphor
+      values[2] = random.nextDouble() * 100; // Potassium
+      values[3] = 3 + random.nextDouble() * (14 - 3); // pH (3-14)
+      values[4] = random.nextDouble() * 50; // Temperature (0-50 °C)
+      values[5] = random.nextDouble() * 100; // Moisture
     });
-  }
+  });
+}
+
 
   Future<void> submitData() async {
     setState(() {
@@ -41,7 +45,7 @@ class SensorState extends State<Sensor> {
     });
 
     // Start countdown
-    _countdown = 15; // Reset countdown to 15 seconds
+    _countdown = 5; // Reset countdown to 15 seconds
     _countdownTimer = Timer.periodic(Duration(seconds: 1), (timer) {
       if (_countdown > 0) {
         setState(() {

@@ -1,7 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiConnect {
-  static const host = "http://192.168.1.27:8000";
+  static const host = "http://192.168.1.24:8000";
 
   static const register = "$host/api/register";
 

@@ -7,7 +7,7 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> loginUser(
-    BuildContext context, String email, String password) async {
+  BuildContext context, String email, String password) async {
   print('Email: $email');
   print('Password: $password');
 
@@ -168,6 +168,10 @@ class Land {
   final String category_fosfor;
   final String category_kalium;
   final String category_ph;
+  final String Perbaikan_pH;
+  final String Perbaikan_N;
+  final String Perbaikan_P;
+  final String Perbaikan_K;
 
   Land({
     required this.id,
@@ -183,6 +187,10 @@ class Land {
     required this.category_fosfor,
     required this.category_kalium,
     required this.category_ph,
+    required this.Perbaikan_pH,
+    required this.Perbaikan_N,
+    required this.Perbaikan_P,
+    required this.Perbaikan_K,
   });
 
   // Factory method to create a Land instance from JSON data
@@ -201,6 +209,10 @@ class Land {
       category_fosfor: (json['category_fosfor']).toString(),
       category_nitrogen: (json['category_nitrogen']).toString(),
       category_ph: (json['category_ph']).toString(),
+      Perbaikan_pH: (json['Perbaikan_pH']).toString(),
+      Perbaikan_N: (json['Perbaikan_N']).toString(),
+      Perbaikan_P: (json['Perbaikan_P']).toString(),
+      Perbaikan_K: (json['Perbaikan_K']).toString()
     );
   }
 
