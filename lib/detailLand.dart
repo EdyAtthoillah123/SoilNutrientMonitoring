@@ -3,6 +3,11 @@ import 'package:soil_nutrient/homepage.dart';
 import 'Api/Api_Service.dart';
 import 'sensor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_blue_plus/flutter_blue_plus.dart'; // Import the package for Bluetooth
+import 'package:shared_preferences/shared_preferences.dart';
+import 'sensor.dart'; // Import your Sensor widget
+import 'bluetooth_connect_screen.dart';
 
 class DetailLandScreen extends StatefulWidget {
   final int landId;
@@ -14,6 +19,9 @@ class DetailLandScreen extends StatefulWidget {
 }
 
 class _DetailLandScreenState extends State<DetailLandScreen> {
+  // final int landId
+
+  // DetailLandScreen({required this.landId
   late Future<List<DetailLand>> futureDetailLands;
   bool measurementSelected1 = false;
   bool measurementSelected2 = false;
@@ -40,17 +48,18 @@ class _DetailLandScreenState extends State<DetailLandScreen> {
 
   Future<void> saveLandId(int landId) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setInt('idLahan', landId);
+    await prefs.setInt('idLahan', landId); // Simpan landId
   }
 
   void saveAndNavigate(int landId) async {
     await saveLandId(landId); // Save the land ID
-    // printLandId(); // Print the land ID after saving
-    print(landId);
+    print(landId); // Optional: for debugging purposes
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => Sensor(),
+        builder: (context) => BluetoothConnectScreen(
+          landId: landId, // Pass the land ID to the new screen
+        ),
       ),
     );
   }
@@ -194,7 +203,17 @@ class _DetailLandScreenState extends State<DetailLandScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          saveAndNavigate(widget.landId); // Pass the correct land ID
+          // Pastikan 'widget.landId' diakses dari parent widget
+          printLandId(); // Fungsi untuk mencetak landId yang tersimpan
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => BluetoothConnectScreen(
+                landId: widget
+                    .landId, // Pastikan landId sesuai tipe yang diterima BluetoothConnectScreen
+              ),
+            ),
+          );
         },
         backgroundColor: const Color(0xFF2E5F4C),
         child: const Icon(
@@ -204,6 +223,20 @@ class _DetailLandScreenState extends State<DetailLandScreen> {
         shape: const CircleBorder(),
       ),
     );
+  }
+
+  void printLandId() async {
+    int? landId = await getLandId(); // Ambil idLahan
+    if (landId != null) {
+      print('Land ID: $landId'); // Cetak Land ID
+    } else {
+      print('Land ID belum disimpan.');
+    }
+  }
+
+  Future<int?> getLandId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getInt('idLahan'); // Mengambil idLahan
   }
 
   Widget buildMeasurementRow(String text, bool isSelected) {

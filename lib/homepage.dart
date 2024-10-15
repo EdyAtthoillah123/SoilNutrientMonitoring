@@ -131,7 +131,12 @@ class _HomeState extends State<Home> {
     );
   }
 
-  void navigateToDetailScreen(int landId) {
+  void navigateToDetailScreen(int landId) async {
+    // Simpan landId ke SharedPreferences
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('idLahan', landId);
+
+    // Navigasi ke halaman DetailLandScreen
     Navigator.push(
       context,
       PageRouteBuilder(
@@ -381,12 +386,12 @@ class _HomeState extends State<Home> {
                             ),
                             ElevatedButton(
                               onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const BluetoothConnectScreen()),
-                                );
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(
+                                //       builder: (context) =>
+                                //           const BluetoothConnectScreen()),
+                                // );
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: const Color(0xFF2E5F4C),
@@ -478,7 +483,7 @@ class _HomeState extends State<Home> {
                                         children: [
                                           detailRow(
                                             'Nitrogen',
-                                            land.averageNitrogen,
+                                            land.averageNitrogen.toStringAsFixed(0),
                                             Icons.grass,
                                             'mg/kg (' +
                                                 land.category_nitrogen +
@@ -492,7 +497,7 @@ class _HomeState extends State<Home> {
                                         children: [
                                           detailRow(
                                             'Fosfor',
-                                            land.averageFosfor,
+                                            land.averageFosfor.toStringAsFixed(0),
                                             Icons.grass,
                                             'mg/kg (' +
                                                 land.category_fosfor +
@@ -506,7 +511,7 @@ class _HomeState extends State<Home> {
                                         children: [
                                           detailRow(
                                             'Kalium',
-                                            land.averageKalium,
+                                            land.averageKalium.toStringAsFixed(0),
                                             Icons.grass,
                                             'mg/kg (' +
                                                 land.category_kalium +
@@ -520,7 +525,7 @@ class _HomeState extends State<Home> {
                                         children: [
                                           detailRow(
                                             'Ph',
-                                            land.averagePh,
+                                            land.averagePh.toStringAsFixed(0),
                                             Icons.grass,
                                             ' (' + land.category_ph + ')',
                                           ),
@@ -528,12 +533,12 @@ class _HomeState extends State<Home> {
                                       ),
                                       detailRow(
                                           'Moisture',
-                                          land.averageMoisture,
+                                          land.averageMoisture.toStringAsFixed(0),
                                           Icons.water,
                                           '%'),
                                       detailRow(
                                           'Temperature',
-                                          land.averageTemperature,
+                                          land.averageTemperature.toStringAsFixed(0),
                                           Icons.thermostat,
                                           '°C'),
                                       Padding(
@@ -600,7 +605,8 @@ class _HomeState extends State<Home> {
                                         alignment: Alignment.centerRight,
                                         child: TextButton(
                                           onPressed: () {
-                                            navigateToDetailScreen(land.id);
+                                            navigateToDetailScreen(land
+                                                .id); // Panggil fungsi navigasi
                                           },
                                           style: TextButton.styleFrom(
                                             backgroundColor: Colors.black,

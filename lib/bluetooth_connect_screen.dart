@@ -5,7 +5,10 @@ import 'screens/bluetooth_off_screen.dart';
 import 'screens/scan_screen.dart';
 
 class BluetoothConnectScreen extends StatefulWidget {
-  const BluetoothConnectScreen({Key? key}) : super(key: key);
+final int landId; // Ubah tipe data menjadi int
+
+  const BluetoothConnectScreen({Key? key, required this.landId}) : super(key: key);
+  // const BluetoothConnectScreen({Key? key}) : super(key: key);
 
   @override
   State<BluetoothConnectScreen> createState() => _BluetoothConnectScreenState();

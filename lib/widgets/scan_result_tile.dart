@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:soil_nutrient/connectedDevice.dart';
+import 'package:soil_nutrient/sensor.dart';
 
 class ScanResultTile extends StatefulWidget {
   const ScanResultTile({Key? key, required this.result, this.onTap}) : super(key: key);
@@ -95,7 +96,7 @@ class _ScanResultTileState extends State<ScanResultTile> {
       await widget.result.device.connect();
       if (isConnected) {
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => ConnectedDevicePage(device: widget.result.device),
+          builder: (context) => Sensor(device: widget.result.device),
         ));
       }
     } catch (e) {

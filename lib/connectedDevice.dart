@@ -204,7 +204,7 @@ class _ConnectedDevicePageState extends State<ConnectedDevicePage> {
     });
 
     // Start countdown
-    _countdown = 300; // Reset countdown to 15 seconds
+    _countdown = 3; // Reset countdown to 15 seconds
     _countdownTimer = Timer.periodic(Duration(seconds: 1), (timer) {
       if (_countdown > 0) {
         setState(() {
